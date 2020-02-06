@@ -5,16 +5,34 @@
 
       <hr class="my-4" />
 
-      <b-list-group class="mb-2" v-for="(answer, index) in answers" :key="index">
+      <b-list-group
+        class="mb-2"
+        v-for="(answer, index) in answers"
+        :key="index"
+      >
         <b-list-group-item
           class="mb-10"
           @click="selectAnswer(index)"
           :class="[selectedIndex === index ? 'selected': '']"
-        >{{ answer }}</b-list-group-item>
+        >
+          {{ answer }}
+        </b-list-group-item>
       </b-list-group>
 
-      <b-button variant="primary" class="mr-4" @click="submitAnswer">Submit</b-button>
-      <b-button variant="success" href="#" @click="next">Next</b-button>
+      <b-button
+        variant="primary"
+        class="mr-4"
+        @click="submitAnswer"
+        :disabled="selectedIndex == null"
+      >
+        Submit
+      </b-button>
+      <b-button
+        variant="success"
+        @click="next"
+      >
+        Next
+      </b-button>
     </b-jumbotron>
   </div>
 </template>
@@ -30,6 +48,7 @@ export default {
   data() {
     return {
       selectedIndex: null,
+      correctIndex: null,
       shuffledAnswers: []
     };
   },

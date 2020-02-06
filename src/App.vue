@@ -1,6 +1,9 @@
 <template>
   <div class="container">
-    <Header></Header>
+    <Header
+      :numCorrect="numCorrect"
+      :totalQues="totalQues"
+    ></Header>
     <QuestionBox
       v-if="questions.length"
       :currentQuestion="questions[index]"
@@ -23,7 +26,9 @@ export default {
   data() {
     return {
       questions: [],
-      index: 0
+      index: 0,
+      numCorrect: 0,
+      totalQues: 0,
     };
   },
   methods: {
@@ -31,7 +36,10 @@ export default {
       this.index++;
     },
     increment(isCorrect) {
-      console.log(isCorrect);
+      if (isCorrect) {
+        this.numCorrect++;
+      }
+      this.totalQues++
     }
   },
   mounted: function() {
