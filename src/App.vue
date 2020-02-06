@@ -2,8 +2,10 @@
   <div class="container">
     <Header></Header>
     <QuestionBox
+      v-if="questions.length"
       :currentQuestion="questions[index]"
       :next="next"
+      :increment="increment"
     ></QuestionBox>
   </div>
 </template>
@@ -27,6 +29,9 @@ export default {
   methods: {
     next() {
       this.index++;
+    },
+    increment(isCorrect) {
+      console.log(isCorrect);
     }
   },
   mounted: function() {
