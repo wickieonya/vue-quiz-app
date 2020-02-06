@@ -3,6 +3,7 @@
     <Header></Header>
     <QuestionBox
       :currentQuestion="questions[index]"
+      :next="next"
     ></QuestionBox>
   </div>
 </template>
@@ -22,6 +23,11 @@ export default {
       questions: [],
       index: 0
     };
+  },
+  methods: {
+    next() {
+      this.index++;
+    }
   },
   mounted: function() {
     fetch("https://opentdb.com/api.php?amount=10&category=18&type=multiple", {
