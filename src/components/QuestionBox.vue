@@ -7,13 +7,13 @@
 
       <b-list-group
         class="mb-2"
-        v-for="(answer, index) in answers"
+        v-for="(answer, index) in shuffledAnswers"
         :key="index"
       >
         <b-list-group-item
           class="mb-10"
           @click="selectAnswer(index)"
-          :class="[selectedIndex === index ? 'selected': '']"
+          :class="answerClass(index)"
         >
           {{ answer }}
         </b-list-group-item>
@@ -23,7 +23,7 @@
         variant="primary"
         class="mr-4"
         @click="submitAnswer"
-        :disabled="selectedIndex == null"
+        :disabled="selectedIndex == null || answered"
       >
         Submit
       </b-button>
@@ -49,6 +49,7 @@ export default {
     return {
       selectedIndex: null,
       correctIndex: null,
+      answered: false,
       shuffledAnswers: []
     };
   },
@@ -61,6 +62,7 @@ export default {
       handler() {
         this.selectedIndex = null;
         this.shuffleAnswers();
+        this.answered = false;
       }
     }
   },
@@ -81,13 +83,34 @@ export default {
         this.currentQuestion.correct_answer
       ];
       this.shuffledAnswers = _.shuffle(answers);
+      this.correctIndex = this.shuffledAnswers.indexOf(
+        this.currentQuestion.correct_answer
+      )
     },
     submitAnswer() {
       let isCorrect = false;
       if (this.selectedIndex == this.correctIndex) {
         isCorrect = true;
       }
+      this.answered = true;
       return isCorrect;
+    },
+    answerClass(index) {
+      let answerClass = '';
+
+      if (!this.answered && this.selectedIndex === index) {
+        answerClass = 'selected'
+      } else if (this.answered && this.correctIndex === index) {
+        answerClass = 'correct'
+      } else if (
+          this.answered &&
+          this.selectedIndex === index &&
+          this.correctIndex !== index
+        ) {
+        answerClass = 'incorrect'
+      }
+
+      return answerClass;
     }
   }
 };
